@@ -12,10 +12,12 @@
 #include "stdafx.h"
 #include "Mesh.h"
 #include "DGL.h"
+#include "stdio.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
-
+static const DGL_Color DGL_Color_Yellow = { 1.0f, 1.0f, 0.0f, 1.0f };
+static const DGL_Color DGL_Color_Red = { 1.0f, 0.0f, 0.0f, 1.0f };
 //------------------------------------------------------------------------------
 // Private Structures:
 //------------------------------------------------------------------------------
@@ -37,7 +39,9 @@ typedef struct Mesh
 //------------------------------------------------------------------------------
 // Private Variables:
 //------------------------------------------------------------------------------
-
+static DGL_Vec2 posSpaceship = { 0.f, 0.f };
+static float alpha = 1.0f;
+static const DGL_Vec2 scaleColored = { 100.f, 100.f };
 //------------------------------------------------------------------------------
 // Private Function Declarations:
 //------------------------------------------------------------------------------
@@ -54,7 +58,11 @@ typedef struct Mesh
 //	   else return NULL.
 Mesh* MeshCreate() 
 {
-	//Mesh* mesh = calloc(1, sizeof(Mesh*));  //right?
+	Mesh* mesh = calloc(1, sizeof(Mesh));
+	if (mesh)
+	{
+		return mesh;
+	}
 
 	return NULL;
 }
@@ -82,6 +90,22 @@ void MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, fl
 	UNREFERENCED_PARAMETER(uSize);
 	UNREFERENCED_PARAMETER(vSize);
 	UNREFERENCED_PARAMETER(name);
+
+	DGL_Graphics_StartMesh();
+
+	// This shape has 2 triangles
+	DGL_Graphics_AddTriangle(
+		&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){  0.0f, vSize },
+		&(DGL_Vec2){ xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize,  0.0f },
+		&(DGL_Vec2){ xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize });
+	DGL_Graphics_AddTriangle(
+		&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){  0.0f, vSize },
+		&(DGL_Vec2){ -xHalfSize, yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){  0.0f,  0.0f },
+		&(DGL_Vec2){ xHalfSize, yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize,  0.0f });
+
+	// Save the mesh (as a list of triangles).
+	mesh->meshResource = DGL_Graphics_EndMesh();
+	//assert(mesh && "Failed to create meshColor!"); // issue as
 }
 
 // Build a "spaceship" mesh and store it in the specified Mesh object.
@@ -96,6 +120,29 @@ void MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, fl
 void MeshBuildSpaceship(Mesh* mesh) 
 {
 	UNREFERENCED_PARAMETER(mesh);
+
+	DGL_Graphics_StartMesh();
+
+
+	DGL_Graphics_AddTriangle(
+		&(DGL_Vec2) { 0.5f, 0.0f }, & DGL_Color_Yellow, & (DGL_Vec2){ 0.0f, 0.0f },
+		& (DGL_Vec2) {-0.5f, -0.5f}, & DGL_Color_Red, & (DGL_Vec2){ 0.0f, 0.0f },
+		& (DGL_Vec2) {-0.5f, 0.5f}, & DGL_Color_Red, & (DGL_Vec2){ 0.0f, 0.0f });
+	
+	
+	
+	DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
+	DGL_Graphics_SetCB_Alpha(alpha);
+	DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
+	DGL_Graphics_SetCB_TransformData(&posSpaceship, &scaleColored, 0.f);
+	DGL_Graphics_DrawMesh(mesh->meshResource, DGL_DM_TRIANGLELIST);
+
+	mesh->meshResource = DGL_Graphics_EndMesh();
+
+
+
+
+
 }
 
 // Render a mesh.
@@ -105,6 +152,10 @@ void MeshBuildSpaceship(Mesh* mesh)
 void MeshRender(const Mesh* mesh) 
 {
 	UNREFERENCED_PARAMETER(mesh);
+
+	DGL_Graphics_DrawMesh(mesh->meshResource, DGL_DM_TRIANGLELIST);
+
+
 }
 
 // Free the memory associated with a mesh.
@@ -121,4 +172,5 @@ void MeshFree(Mesh** mesh)
 //------------------------------------------------------------------------------
 // Private Functions:
 //------------------------------------------------------------------------------
+
 

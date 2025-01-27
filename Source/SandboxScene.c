@@ -16,6 +16,7 @@
 #include "Trace.h"
 #include "Vector2D.h"
 #include "Stream.h"
+#include "Mesh.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -209,6 +210,11 @@ static void SandboxSceneUpdate(float dt)
         SandboxSceneTraceFloat("Vector2DToAngleRad", angleRadFromVector);
 
         StreamClose(&stream);
+
+
+        //MeshCreate();
+
+
     }
 
     SceneSystemSetNext(NULL);
