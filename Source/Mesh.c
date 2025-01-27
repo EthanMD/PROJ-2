@@ -105,7 +105,7 @@ void MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, fl
 
 	// Save the mesh (as a list of triangles).
 	mesh->meshResource = DGL_Graphics_EndMesh();
-	//assert(mesh && "Failed to create meshColor!"); // issue as
+	//assert(mesh && "Failed to create meshColor!"); // issue assert not working
 }
 
 // Build a "spaceship" mesh and store it in the specified Mesh object.
@@ -139,10 +139,6 @@ void MeshBuildSpaceship(Mesh* mesh)
 
 	mesh->meshResource = DGL_Graphics_EndMesh();
 
-
-
-
-
 }
 
 // Render a mesh.
@@ -155,7 +151,6 @@ void MeshRender(const Mesh* mesh)
 
 	DGL_Graphics_DrawMesh(mesh->meshResource, DGL_DM_TRIANGLELIST);
 
-
 }
 
 // Free the memory associated with a mesh.
@@ -167,6 +162,11 @@ void MeshRender(const Mesh* mesh)
 void MeshFree(Mesh** mesh) 
 {
 	UNREFERENCED_PARAMETER(mesh);
+
+	DGL_Graphics_FreeMesh(&(*mesh)->meshResource); // need to understand
+
+	free(*mesh);
+	*mesh = NULL;
 }
 
 //------------------------------------------------------------------------------
