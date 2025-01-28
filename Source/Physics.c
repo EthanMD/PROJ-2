@@ -13,6 +13,7 @@
 #include "Physics.h"
 #include "Vector2D.h"
 #include "Stream.h"
+#include "Transform.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -191,6 +192,22 @@ void PhysicsUpdate(Physics* physics, Transform* transform, float dt)
 	UNREFERENCED_PARAMETER(physics);
 	UNREFERENCED_PARAMETER(transform);
 	UNREFERENCED_PARAMETER(dt);
+
+	// Validate the pointers.
+
+	// Get translation from the transform component
+	// Set oldTranslation = translation
+	physics->oldTranslation = *TransformGetTranslation(transform);
+	
+	// Set velocity += acceleration * dt
+	Vector2DScaleAdd(&physics->velocity, &physics->acceleration, dt, &physics->velocity);
+
+	// Set translation += velocity * dt
+	Vector2DScaleAdd(&physics->oldTranslation, &physics->velocity, dt, &physics->oldTranslation);
+	// Set translation on the transform component
+	
+	TransformSetTranslation(transform, &physics->oldTranslation);
+
 }
 
 //------------------------------------------------------------------------------
