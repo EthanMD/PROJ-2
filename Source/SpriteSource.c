@@ -11,7 +11,7 @@
 
 #include "stdafx.h"
 #include "SpriteSource.h"
-
+#include "DGL.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -55,6 +55,12 @@ typedef struct SpriteSource
 //	   else return NULL.
 SpriteSource* SpriteSourceCreate() 
 {
+	SpriteSource* spriteSource = calloc(1, sizeof(SpriteSource*));
+	if (spriteSource)
+	{
+		return spriteSource;
+	}
+
 	return NULL;
 }
 
@@ -67,6 +73,11 @@ SpriteSource* SpriteSourceCreate()
 void SpriteSourceFree(SpriteSource** spriteSource)
 {
 	UNREFERENCED_PARAMETER(spriteSource);
+
+	DGL_Graphics_FreeTexture(&(*spriteSource)->texture);
+
+	free(*spriteSource);
+	*spriteSource = NULL;   // correct?
 }
 
 // Load a texture from a file (may be an Col x Row sprite sheet).
