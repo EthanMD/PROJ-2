@@ -96,14 +96,12 @@ void SpriteSourceLoadTexture(SpriteSource* spriteSource, int numCols, int numRow
 	UNREFERENCED_PARAMETER(textureName);
 
 	char texturePath[256];
-	//sprintf_s(texturePath, sizeof(texturePath), "./Assets", textureName);
+	sprintf_s(texturePath, sizeof(texturePath), "./Assets %s", textureName);
 
 	spriteSource->texture = DGL_Graphics_LoadTexture(texturePath);
 
 	spriteSource->numCols = numCols;
 	spriteSource->numRows = numRows;
-
-
 
 }
 
@@ -142,15 +140,18 @@ void SpriteSourceGetUV(const SpriteSource* spriteSource, unsigned int frameIndex
 	UNREFERENCED_PARAMETER(v);
 
 
-	//u = 1.0f / numColumns;
+	//uSize = 1.0f / numColumns;
 	//vSize = 1.0f / numRows
 
 	//uOffset = uSize * (frameIndex % numColumns);
 	//vOffset = vSize * (frameIndex / numColumns);
 
 
+	float uOffset = 1.0f / spriteSource->numCols;
+	float vOffset = 1.0f / spriteSource->numRows;
 
-
+	*u = uOffset / (frameIndex % spriteSource->numCols);
+	*v = vOffset / (frameIndex / spriteSource->numCols);
 }
 
 // Sets a SpriteSource texture for rendering.
@@ -159,6 +160,9 @@ void SpriteSourceGetUV(const SpriteSource* spriteSource, unsigned int frameIndex
 void SpriteSourceSetTexture(const SpriteSource* spriteSource) 
 {
 	UNREFERENCED_PARAMETER(spriteSource);
+
+
+	DGL_Graphics_SetTexture(spriteSource->texture);
 
 }
 
@@ -170,7 +174,12 @@ void SpriteSourceSetTextureOffset(const SpriteSource* spriteSource, unsigned fra
 	UNREFERENCED_PARAMETER(spriteSource);
 	UNREFERENCED_PARAMETER(frameIndex);
 
+	DGL_Vec2 offset = { 0,0 };
 
+	SpriteSourceGetUV(spriteSource, frameIndex, &offset.x, &offset.y);
+	DGL_Graphics_SetCB_TextureOffset(&offset);
+
+	//issues?
 }
 
 //------------------------------------------------------------------------------
