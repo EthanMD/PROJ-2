@@ -75,6 +75,9 @@ Physics* PhysicsCreate(void)
 void PhysicsFree(Physics** physics)
 {
 	UNREFERENCED_PARAMETER(physics);
+
+	free(*physics);
+	*physics = NULL;
 }
 
 // Read the properties of a Physics component from a file.
@@ -86,6 +89,8 @@ void PhysicsRead(Physics* physics, Stream stream)
 {
 	UNREFERENCED_PARAMETER(physics);
 	UNREFERENCED_PARAMETER(stream);
+
+
 }
 
 // Get the acceleration of a Physics component.

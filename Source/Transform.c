@@ -97,7 +97,7 @@ void TransformRead(Transform* transform, Stream stream)
 
 	StreamReadVector2D(stream, &transform->translation); 
 
-	StreamReadFloat(stream);
+	transform->rotation = StreamReadFloat(stream);
 
 	StreamReadVector2D(stream, &transform->scale); 
 
