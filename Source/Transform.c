@@ -77,8 +77,7 @@ void TransformFree(Transform** transform)
 	UNREFERENCED_PARAMETER(transform);
 
 	free(*transform);
-	*transform = NULL;   // correct?
-
+	*transform = NULL;
 
 }
 

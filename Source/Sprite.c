@@ -11,7 +11,8 @@
 
 #include "stdafx.h"
 #include "Sprite.h"
-
+#include "Stream.h"
+#include "DGL.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -59,6 +60,12 @@ typedef struct Sprite
 //	   else return NULL.
 Sprite* SpriteCreate(void) 
 {
+	Sprite* sprite = calloc(1, sizeof(Sprite*));
+	if (sprite)
+	{
+		return sprite;
+	}
+
 	return NULL;
 }
 
@@ -69,6 +76,9 @@ Sprite* SpriteCreate(void)
 void SpriteFree(Sprite** sprite) 
 {
 	UNREFERENCED_PARAMETER(sprite);
+
+	free(*sprite);
+	*sprite = NULL;
 }
 
 
@@ -82,6 +92,10 @@ void SpriteRead(Sprite* sprite, Stream stream)
 {
 	UNREFERENCED_PARAMETER(sprite);
 	UNREFERENCED_PARAMETER(stream);
+
+	sprite->frameIndex = StreamReadInt(stream);
+	sprite->alpha = StreamReadFloat(stream);
+	
 }
 
 // Render a Sprite (Sprite can be textured or untextured).
@@ -92,6 +106,8 @@ void SpriteRender(const Sprite* sprite, Transform* transform)
 {
 	UNREFERENCED_PARAMETER(sprite);
 	UNREFERENCED_PARAMETER(transform);
+
+	
 }
 
 // Get a Sprite's alpha value.
@@ -104,7 +120,13 @@ void SpriteRender(const Sprite* sprite, Transform* transform)
 float SpriteGetAlpha(const Sprite* sprite)
 {
 	UNREFERENCED_PARAMETER(sprite);
-	return 0;
+
+	if (sprite) 
+	{
+		return sprite->alpha;
+	}
+
+	return 0.0f;
 }
 
 // Set a Sprite's alpha value.
@@ -118,6 +140,8 @@ void SpriteSetAlpha(Sprite* sprite, float alpha)
 {
 	UNREFERENCED_PARAMETER(sprite);
 	UNREFERENCED_PARAMETER(alpha);
+
+	sprite->alpha = min(1.0f, max(0.0f, alpha));
 }
 
 // Set a Sprite's current frame.
@@ -133,6 +157,14 @@ void SpriteSetFrame(Sprite* sprite, unsigned int frameIndex)
 {
 	UNREFERENCED_PARAMETER(sprite);
 	UNREFERENCED_PARAMETER(frameIndex);
+
+	if (frameIndex >= 0 && frameIndex >= sprite->frameIndex - 1) 
+	{
+		sprite->frameIndex = frameIndex; // issues?
+	}
+
+
+	TraceMessage("SpriteSetFrame: frame index = %d", frameIndex); 
 }
 
 // Set the Sprite's mesh.
