@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "Physics.h"
 #include "Vector2D.h"
+#include "Stream.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -90,7 +91,8 @@ void PhysicsRead(Physics* physics, Stream stream)
 	UNREFERENCED_PARAMETER(physics);
 	UNREFERENCED_PARAMETER(stream);
 
-
+	StreamReadVector2D(stream, &physics->acceleration);
+	StreamReadVector2D(stream, &physics->velocity);
 }
 
 // Get the acceleration of a Physics component.
