@@ -59,6 +59,12 @@ typedef struct Physics
 //	   else return NULL.
 Physics* PhysicsCreate(void) 
 {
+	Physics* physics = calloc(1, sizeof(physics));
+	if (physics)
+	{
+		return physics;
+	}
+
 	return NULL;
 }
 

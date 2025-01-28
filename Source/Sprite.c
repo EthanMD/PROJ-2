@@ -13,6 +13,10 @@
 #include "Sprite.h"
 #include "Stream.h"
 #include "DGL.h"
+#include "Trace.h"
+#include "SpriteSource.h"
+#include "Mesh.h"
+#include "Transform.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -104,10 +108,28 @@ void SpriteRead(Sprite* sprite, Stream stream)
 //   transform = Pointer to the Transform component.
 void SpriteRender(const Sprite* sprite, Transform* transform) 
 {
+	DGL_Color tintColor;
+	tintColor.a = 0;
+	tintColor.b = 0;
+	tintColor.g = 0;
+	tintColor.r = 0;
+
 	UNREFERENCED_PARAMETER(sprite);
 	UNREFERENCED_PARAMETER(transform);
 
-	
+	if (sprite->spriteSource) 
+	{
+		DGL_Graphics_SetShaderMode(DGL_PSM_TEXTURE, DGL_VSM_DEFAULT);
+		SpriteSourceSetTexture(sprite->spriteSource);
+		SpriteSourceSetTextureOffset(sprite->spriteSource, sprite->frameIndex);
+	}
+
+	DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
+	DGL_Graphics_SetCB_TransformData(TransformGetTranslation(transform), TransformGetScale(transform), TransformGetRotation(transform));
+	DGL_Graphics_SetCB_Alpha(sprite->alpha);
+	DGL_Graphics_SetCB_TintColor(&tintColor);
+	MeshRender(sprite->mesh);
+
 }
 
 // Get a Sprite's alpha value.
@@ -177,6 +199,10 @@ void SpriteSetMesh(Sprite* sprite, const Mesh* mesh)
 {
 	UNREFERENCED_PARAMETER(sprite);
 	UNREFERENCED_PARAMETER(mesh);
+
+
+	sprite->mesh = mesh;
+
 }
 
 // Set a new SpriteSource for the specified Sprite.
@@ -189,6 +215,10 @@ void SpriteSetSpriteSource(Sprite* sprite, const SpriteSource* spriteSource)
 {
 	UNREFERENCED_PARAMETER(sprite);
 	UNREFERENCED_PARAMETER(spriteSource);
+
+
+	sprite->spriteSource = spriteSource;
+
 }
 //------------------------------------------------------------------------------
 // Private Functions:
