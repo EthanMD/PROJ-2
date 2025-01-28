@@ -77,7 +77,7 @@ void SpriteSourceFree(SpriteSource** spriteSource)
 	DGL_Graphics_FreeTexture(&(*spriteSource)->texture);
 
 	free(*spriteSource);
-	*spriteSource = NULL;   // correct?
+	*spriteSource = NULL; 
 }
 
 // Load a texture from a file (may be an Col x Row sprite sheet).
@@ -95,6 +95,16 @@ void SpriteSourceLoadTexture(SpriteSource* spriteSource, int numCols, int numRow
 	UNREFERENCED_PARAMETER(numRows);
 	UNREFERENCED_PARAMETER(textureName);
 
+	char texturePath[256];
+	sprintf_s(texturePath, sizeof(texturePath), "./Assets", textureName);
+
+	spriteSource->texture = DGL_Graphics_LoadTexture(texturePath);
+
+	spriteSource->numCols = numCols;
+	spriteSource->numRows = numRows;
+
+
+
 }
 
 // Returns the maximum number of frames possible, given the dimensions of the sprite sheet.
@@ -108,6 +118,11 @@ void SpriteSourceLoadTexture(SpriteSource* spriteSource, int numCols, int numRow
 unsigned SpriteSourceGetFrameCount(const SpriteSource* spriteSource)
 {
 	UNREFERENCED_PARAMETER(spriteSource);
+
+	if (spriteSource)
+	{
+		return (spriteSource->numCols * spriteSource->numRows);
+	}
 
 	return 0;
 }
@@ -125,6 +140,17 @@ void SpriteSourceGetUV(const SpriteSource* spriteSource, unsigned int frameIndex
 	UNREFERENCED_PARAMETER(frameIndex);
 	UNREFERENCED_PARAMETER(u);
 	UNREFERENCED_PARAMETER(v);
+
+
+	//u = 1.0f / numColumns;
+	//vSize = 1.0f / numRows
+
+	//uOffset = uSize * (frameIndex % numColumns);
+	//vOffset = vSize * (frameIndex / numColumns);
+
+
+
+
 }
 
 // Sets a SpriteSource texture for rendering.
@@ -143,6 +169,8 @@ void SpriteSourceSetTextureOffset(const SpriteSource* spriteSource, unsigned fra
 {
 	UNREFERENCED_PARAMETER(spriteSource);
 	UNREFERENCED_PARAMETER(frameIndex);
+
+
 }
 
 //------------------------------------------------------------------------------
