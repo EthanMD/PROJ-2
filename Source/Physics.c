@@ -105,6 +105,13 @@ void PhysicsRead(Physics* physics, Stream stream)
 const Vector2D* PhysicsGetAcceleration(const Physics* physics)
 {
 	UNREFERENCED_PARAMETER(physics);
+
+
+	if (physics) 
+	{
+		return &physics->acceleration;
+	}
+
 	return NULL;
 }
 
@@ -118,6 +125,13 @@ const Vector2D* PhysicsGetAcceleration(const Physics* physics)
 const Vector2D* PhysicsGetVelocity(const Physics* physics)
 {
 	UNREFERENCED_PARAMETER(physics);
+
+
+	if (physics)
+	{
+		return &physics->velocity;
+	}
+
 	return NULL;
 }
 
@@ -131,6 +145,12 @@ const Vector2D* PhysicsGetVelocity(const Physics* physics)
 const Vector2D* PhysicsGetOldTranslation(Physics* physics)
 {
 	UNREFERENCED_PARAMETER(physics);
+
+	if (physics)
+	{
+		return &physics->oldTranslation;
+	}
+
 	return NULL;
 }
 
@@ -142,6 +162,8 @@ void PhysicsSetAcceleration(Physics* physics, const Vector2D* acceleration)
 {
 	UNREFERENCED_PARAMETER(physics);
 	UNREFERENCED_PARAMETER(acceleration);
+
+	physics->acceleration = *acceleration; 
 }
 
 // Set the velocity of a Physics component.
@@ -152,6 +174,9 @@ void PhysicsSetVelocity(Physics* physics, const Vector2D* velocity)
 {
 	UNREFERENCED_PARAMETER(physics);
 	UNREFERENCED_PARAMETER(velocity);
+
+	physics->velocity = *velocity;
+
 }
 
 // Update the state of a Physics component using the Semi-Implicit Euler method,
