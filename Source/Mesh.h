@@ -93,21 +93,21 @@ void MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, fl
 //// (NOTE: The drawMode should be set to DGL_DM_TRIANGLELIST.)
 //// Params:
 ////   mesh = Pointer to an existing, empty Mesh object.
-//void MeshBuildSpaceship(Mesh* mesh);
-//
-//// Render a mesh.
-//// (NOTE: This is done using DGL_Graphics_DrawMesh().)
-//// Params:
-////   mesh = Pointer to a Mesh to be rendered.
-//void MeshRender(const Mesh* mesh);
-//
-//// Free the memory associated with a mesh.
-//// (NOTE: The DGL_Mesh resource must be freed using DGL_Graphics_FreeMesh().)
-//// (NOTE: The Mesh object must be freed using free().
-//// (NOTE: The Mesh pointer must be set to NULL.)
-//// Params:
-////   mesh = Pointer to the Mesh pointer.
-//void MeshFree(Mesh** mesh);
+void MeshBuildSpaceship(Mesh* mesh);
+
+// Render a mesh.
+// (NOTE: This is done using DGL_Graphics_DrawMesh().)
+// Params:
+//   mesh = Pointer to a Mesh to be rendered.
+void MeshRender(const Mesh* mesh);
+
+// Free the memory associated with a mesh.
+// (NOTE: The DGL_Mesh resource must be freed using DGL_Graphics_FreeMesh().)
+// (NOTE: The Mesh object must be freed using free().
+// (NOTE: The Mesh pointer must be set to NULL.)
+// Params:
+//   mesh = Pointer to the Mesh pointer.
+void MeshFree(Mesh** mesh);
 
 //------------------------------------------------------------------------------
 

@@ -36,6 +36,8 @@ typedef struct Mesh
 // Public Variables:
 //------------------------------------------------------------------------------
 
+
+
 //------------------------------------------------------------------------------
 // Private Variables:
 //------------------------------------------------------------------------------
@@ -117,11 +119,14 @@ void MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, fl
 // (NOTE: The drawMode should be set to DGL_DM_TRIANGLELIST.)
 // Params:
 //   mesh = Pointer to an existing, empty Mesh object.
-void MeshBuildSpaceship(Mesh* mesh) 
+void MeshBuildSpaceship(Mesh* mesh) //possibly messed up
 {
 	UNREFERENCED_PARAMETER(mesh);
 
+	mesh->drawMode = DGL_DM_TRIANGLELIST;
+
 	DGL_Graphics_StartMesh();
+
 
 
 	DGL_Graphics_AddTriangle(
@@ -131,11 +136,7 @@ void MeshBuildSpaceship(Mesh* mesh)
 	
 	
 	
-	DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
-	DGL_Graphics_SetCB_Alpha(alpha);
-	DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
-	DGL_Graphics_SetCB_TransformData(&posSpaceship, &scaleColored, 0.f);
-	DGL_Graphics_DrawMesh(mesh->meshResource, DGL_DM_TRIANGLELIST);
+
 
 	mesh->meshResource = DGL_Graphics_EndMesh();
 
@@ -149,8 +150,8 @@ void MeshRender(const Mesh* mesh)
 {
 	UNREFERENCED_PARAMETER(mesh);
 
-	DGL_Graphics_DrawMesh(mesh->meshResource, DGL_DM_TRIANGLELIST);
-
+	DGL_Graphics_DrawMesh(mesh->meshResource, mesh->drawMode);
+	
 }
 
 // Free the memory associated with a mesh.

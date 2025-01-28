@@ -12,6 +12,7 @@
 #include "stdafx.h"
 #include "Transform.h"
 #include "Vector2D.h"
+#include "Stream.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -57,7 +58,14 @@ typedef struct Transform
 //	   else return NULL.
 Transform* TransformCreate(void)
 {
+	Transform* transform = calloc(1, sizeof(Transform*));
+	if (transform)
+	{
+		return transform;
+	}
+
 	return NULL;
+
 }
 
 // Free the memory associated with a Transform component.
@@ -67,11 +75,18 @@ Transform* TransformCreate(void)
 void TransformFree(Transform** transform) 
 {
 	UNREFERENCED_PARAMETER(transform);
+
+	free(*transform);
+	*transform = NULL;   // correct?
+
+
 }
 
 // Read the properties of a Transform component from a file.
 // [NOTE: Read the translation value using StreamReadVector2D.]
+// 
 // [NOTE: Read the rotation value using StreamReadFloat.]
+// 
 // [NOTE: Read the scale value using StreamReadVector2D.]
 // Params:
 //	 transform = Pointer to the Transform component.
@@ -80,6 +95,13 @@ void TransformRead(Transform* transform, Stream stream)
 {
 	UNREFERENCED_PARAMETER(transform);
 	UNREFERENCED_PARAMETER(stream);
+
+	StreamReadVector2D(stream, &transform->translation); //wrong??
+
+	StreamReadFloat(stream);
+
+	StreamReadVector2D(stream, &transform->scale); //wrong??
+
 }
 
 // Get the translation of a Transform component.
@@ -105,6 +127,13 @@ const Vector2D* TransformGetTranslation(const Transform* transform)
 float TransformGetRotation(const Transform* transform) 
 {
 	UNREFERENCED_PARAMETER(transform);
+
+	if (transform) 
+	{
+		return 1;
+	}
+
+
 	return 0;
 }
 
