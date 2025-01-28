@@ -96,11 +96,11 @@ void TransformRead(Transform* transform, Stream stream)
 	UNREFERENCED_PARAMETER(transform);
 	UNREFERENCED_PARAMETER(stream);
 
-	StreamReadVector2D(stream, &transform->translation); //wrong??
+	StreamReadVector2D(stream, &transform->translation); 
 
 	StreamReadFloat(stream);
 
-	StreamReadVector2D(stream, &transform->scale); //wrong??
+	StreamReadVector2D(stream, &transform->scale); 
 
 }
 
@@ -114,6 +114,14 @@ void TransformRead(Transform* transform, Stream stream)
 const Vector2D* TransformGetTranslation(const Transform* transform) 
 {
 	UNREFERENCED_PARAMETER(transform);
+
+
+	if (transform) 
+	{
+		return &transform->translation;
+	}
+
+
 	return NULL;
 }
 
@@ -130,11 +138,11 @@ float TransformGetRotation(const Transform* transform)
 
 	if (transform) 
 	{
-		return 1;
+		return transform->rotation;
 	}
 
 
-	return 0;
+	return 0.0f;
 }
 
 // Get the scale of a Transform component.
@@ -147,6 +155,12 @@ float TransformGetRotation(const Transform* transform)
 const Vector2D* TransformGetScale(const Transform* transform)
 {
 	UNREFERENCED_PARAMETER(transform);
+
+	if (transform)
+	{
+		return &transform->scale;
+	}
+
 	return NULL;
 }
 
@@ -158,6 +172,8 @@ void TransformSetTranslation(Transform* transform, const Vector2D* translation)
 {
 	UNREFERENCED_PARAMETER(transform);
 	UNREFERENCED_PARAMETER(translation);
+
+	transform->translation = *translation;
 }
 
 // Set the rotation of a Transform component.
@@ -168,6 +184,8 @@ void TransformSetRotation(Transform* transform, float rotation)
 {
 	UNREFERENCED_PARAMETER(transform);
 	UNREFERENCED_PARAMETER(rotation);
+
+	transform->rotation = rotation;
 }
 
 // Set the scale of a Transform component.
@@ -178,6 +196,8 @@ void TransformSetScale(Transform* transform, const Vector2D* scale)
 {
 	UNREFERENCED_PARAMETER(transform);
 	UNREFERENCED_PARAMETER(scale);
+
+	transform->scale = *scale;
 }
 //------------------------------------------------------------------------------
 // Private Functions:

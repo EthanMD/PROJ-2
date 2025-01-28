@@ -96,7 +96,7 @@ void SpriteSourceLoadTexture(SpriteSource* spriteSource, int numCols, int numRow
 	UNREFERENCED_PARAMETER(textureName);
 
 	char texturePath[256];
-	sprintf_s(texturePath, sizeof(texturePath), "./Assets", textureName);
+	//sprintf_s(texturePath, sizeof(texturePath), "./Assets", textureName);
 
 	spriteSource->texture = DGL_Graphics_LoadTexture(texturePath);
 
