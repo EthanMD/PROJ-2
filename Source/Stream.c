@@ -178,7 +178,7 @@ const char* StreamReadToken(Stream stream)
 		unsigned int bufferSize = _countof(tokenBuffer);
 
 		fscanf_s(stream, "%s", tokenBuffer, bufferSize);
-		//fscanf_s(stream, "%s", &tokenBuffer,_countof(tokenBuffer));
+
 		return tokenBuffer;
 	}
 

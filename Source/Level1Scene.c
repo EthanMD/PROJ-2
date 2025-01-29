@@ -115,7 +115,7 @@ static void Level1SceneUpdate(float dt)
 
 
 	instance.numLives--;
-	if (instance.numLives <= 0)
+	if (instance.numLives <= 0) //remove now?
 	{
 		//set to LEVEL2
 		SceneSystemSetNext(Level2SceneGetInstance());	
