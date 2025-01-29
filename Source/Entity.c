@@ -11,7 +11,7 @@
 
 #include "stdafx.h"
 #include "Entity.h"
-
+#include "Transform.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -19,7 +19,31 @@
 //------------------------------------------------------------------------------
 // Private Structures:
 //------------------------------------------------------------------------------
+typedef struct Entity
+{
+	// The name of the entity.
+	// A buffer is used to allow each entity to have a unique name.
+	// The buffer is hardcoded to an arbitrary length that will be sufficient
+	//	 for all CS230 assignments.  You may, instead, use dynamically-allocated
+	//	 arrays for this purpose but the additional complexity is unnecessary
+	//	 and it is your responsibility to ensure that the memory is successfully
+	//	 allocated and deallocated in all possible situations.
+	// [NOTE: When setting the name, use strcpy_s() to reduce the risk of
+	//	 buffer overruns. Additionally, do NOT hardcode the number "32" when
+	//	 calling this function!  Instead, use the _countof() macro to get the
+	//	 size of the "name" array.]
+	char name[32];
 
+	// Pointer to an attached physics component.
+	Physics* physics;
+
+	// Pointer to an attached sprite component.
+	Sprite* sprite;
+
+	// Pointer to an attached transform component.
+	Transform* transform;
+
+} Entity;
 //------------------------------------------------------------------------------
 // Public Variables:
 //------------------------------------------------------------------------------
@@ -33,17 +57,23 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Public Functions:
-//------------------------------------------------------------------------------
-
-// Dynamically allocate a new Entity.
-// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 // Returns:
 //	 If the memory allocation was successful,
 //	   then return a pointer to the allocated memory,
 //	   else return NULL.
 Entity* EntityCreate(void) 
 {
+	Entity* entity = calloc(1, sizeof(Entity*));
+	if (entity)
+	{
+// Public Functions:
+//------------------------------------------------------------------------------
+
+// Dynamically allocate a new Entity.
+// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
+		return entity;
+	}
+
 	return NULL;
 }
 
@@ -55,6 +85,9 @@ Entity* EntityCreate(void)
 void EntityFree(Entity** entity)
 {
 	UNREFERENCED_PARAMETER(entity);
+
+	free(*entity);
+	*entity = NULL;
 }
 
 // Read (and construct) the components associated with a entity.
@@ -66,6 +99,38 @@ void EntityRead(Entity* entity, Stream stream)
 {
 	UNREFERENCED_PARAMETER(entity);
 	UNREFERENCED_PARAMETER(stream);
+
+	if (entity && stream) 
+	{
+		//read a token from the stream
+		
+		//use the token to set the entitys name
+		
+		//While(true)
+		
+		//[NOTE:When setting the name, use strcpy_s() to reduce the risk of
+		//buffer overruns. Additionally, do NOT hardcode the number "32" when
+	    //calling this function!  Instead, use the _countof() macro to get the
+	    //size of the "name" array.]
+		//	•	Read a token from the stream.
+		
+		//	•	If “token” contains “Transform”
+		//	1.	Create a new transform component using TransformCreate()
+		
+		//	2.	Call TransformRead(), passing the created transform
+		
+		//	3.	Add the transform to the entity
+		
+		//	•	Else if “token” contains “Physics
+		//Repeat steps 1 - 3 above, replacing “Transform” with “Physics”.
+		
+
+		//Else if “token” contains “Sprite”,
+		//Repeat steps 1 - 3 above, replacing “Transform” with “Sprite”.
+		//Else if “token” is empty(zero - length string),
+		//Break out of the while - loop.
+
+	}
 }
 
 // Attach a Physics component to an Entity.
