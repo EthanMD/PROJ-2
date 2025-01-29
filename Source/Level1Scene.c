@@ -17,6 +17,9 @@
 #include "Stream.h"
 #include "Level2Scene.h"
 #include "DemoScene.h"
+#include "Mesh.h"
+#include "Sprite.h"
+#include "Entity.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -29,9 +32,11 @@ typedef struct Level1Scene
 {
 	// WARNING: The base class must always be included first.
 	Scene	base;
-
 	// Add any scene-specific variables second.
 	int numLives;
+	Mesh* mesh;
+	SpriteSource* spriteSource;
+	Entity* entity;
 
 } Level1Scene;
 
