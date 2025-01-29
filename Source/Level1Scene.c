@@ -23,6 +23,7 @@
 #include "Vector2D.h"
 #include "SpriteSource.h"
 #include "EntityFactory.h"
+#include "SandboxScene.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -111,9 +112,9 @@ static void Level1SceneLoad(void)
 	Mesh* mesh = MeshCreate();
 	MeshBuildQuad(mesh,0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
 
-	SpriteSource* spriteSource = SpriteSourceCreate();
+	SpriteSource* spriteSource = SpriteSourceCreate(); //issues
 
-	SpriteSourceLoadTexture(spriteSource, 1, 1, "PlanetTexture.png");
+	SpriteSourceLoadTexture(spriteSource, 1, 1, "PlanetTexture.png"); //issues
 
 
 }
@@ -126,7 +127,7 @@ static void Level1SceneInit()
 	if (newEntity)
 	{
 		
-		Sprite* newSprite = EntityGetSprite(newEntity);
+		//Sprite* sprite = EntityGetSprite(newEntity);
 
 		//sprite->mesh //cant access
 
@@ -162,6 +163,22 @@ static void Level1SceneUpdate(float dt)
 		SceneSystemSetNext(Level2SceneGetInstance());	
 	}
 
+	if (DGL_Input_KeyTriggered('0'))
+	{
+		SceneSystemSetNext(DemoSceneGetInstance());
+	}
+	if (DGL_Input_KeyTriggered('1'))
+	{
+		SceneRestart();
+	}
+	if (DGL_Input_KeyTriggered('2'))
+	{
+		SceneSystemSetNext(Level2SceneGetInstance());
+	}
+	if (DGL_Input_KeyTriggered('9'))
+	{
+		SceneSystemSetNext(SandboxSceneGetInstance());
+	}
 
 	
 
