@@ -171,15 +171,17 @@ void StreamClose(Stream* stream)
 //	 Pointer to tokenBuffer
 const char* StreamReadToken(Stream stream)
 {
-	static char tokenBuffer[1024];
+	static char tokenBuffer[1024] = { 0 };
 
 	if (stream)
 	{
-		fscanf_s(stream, "%s", &tokenBuffer,_countof(tokenBuffer));
+		unsigned int bufferSize = _countof(tokenBuffer);
 
-
+		fscanf_s(stream, "%s", tokenBuffer, bufferSize);
+		//fscanf_s(stream, "%s", &tokenBuffer,_countof(tokenBuffer));
+		return tokenBuffer;
 	}
 
 
-
+	return NULL;
 }
