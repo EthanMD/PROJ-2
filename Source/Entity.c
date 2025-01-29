@@ -102,8 +102,8 @@ void EntityFree(Entity** entity)
 //	 stream = The data stream used for reading.
 void EntityRead(Entity* entity, Stream stream)
 {
-	UNREFERENCED_PARAMETER(entity);
-	UNREFERENCED_PARAMETER(stream);
+	//UNREFERENCED_PARAMETER(entity);
+	//UNREFERENCED_PARAMETER(stream);
 
 	if (entity && stream) 
 	{
@@ -111,55 +111,65 @@ void EntityRead(Entity* entity, Stream stream)
 		const char* token = StreamReadToken(stream);
 		//use the token to set the entitys name
 		
+		if (!token)
+		{
+			return;
+		}
+
+
 		strcpy_s(entity->name,sizeof(Entity*),token); //good?
 
 
-		//While(true) //?
+
+		while (true) 
+		{
+			StreamReadToken(stream);
+
+			//[NOTE:When setting the name, use strcpy_s() to reduce the risk of
+			//buffer overruns. Additionally, do NOT hardcode the number "32" when
+			//calling this function!  Instead, use the _countof() macro to get the
+			//size of the "name" array.]
+			//	•	Read a token from the stream.
+			//	•	If “token” contains “Transform”
+
+			if (!strcmp(token,"Transform"))
+			{
+				//	1.	Create a new transform component using TransformCreate()
+
+				//TransformCreate();
+
+				//	2.	Call TransformRead(), passing the created transform
+				//TransformRead();
+				//	3.	Add the transform to the entity
+
+			}
+			else if (!strcmp(token, "Physics"))
+			{
+				//	•	Else if “token” contains “Physics
+				//Repeat steps 1 - 3 above, replacing “Transform” with “Physics”.
+
+
+
+			}
+			else if (!strcmp(token, "Sprite"))
+			{
+				//Else if “token” contains “Sprite”,
+				//Repeat steps 1 - 3 above, replacing “Transform” with “Sprite”.
+
+
+			}
+			else if (!token[0])
+			{
+				//Else if “token” is empty(zero - length string),
+				//Break out of the while - loop.
+				return;
+			}
+
+
+
+
+		}
 		
-
-		//[NOTE:When setting the name, use strcpy_s() to reduce the risk of
-		//buffer overruns. Additionally, do NOT hardcode the number "32" when
-	    //calling this function!  Instead, use the _countof() macro to get the
-	    //size of the "name" array.]
-		//	•	Read a token from the stream.
-		
-
-
-		//	•	If “token” contains “Transform”
-		if (token == "Transform") 
-		{
-			//	1.	Create a new transform component using TransformCreate()
-			
-			//TransformCreate();
-
-			//	2.	Call TransformRead(), passing the created transform
-			//TransformRead();
-			//	3.	Add the transform to the entity
-
-		}
-		else if (token == "Physics") 
-		{
-			//	•	Else if “token” contains “Physics
-			//Repeat steps 1 - 3 above, replacing “Transform” with “Physics”.
-
-
-
-		}
-		else if (token == "Sprite")
-		{
-			//Else if “token” contains “Sprite”,
-			//Repeat steps 1 - 3 above, replacing “Transform” with “Sprite”.
-
-
-		}
-		else if (!token)
-		{
-			//Else if “token” is empty(zero - length string),
-			//Break out of the while - loop.
-			return;
-		}
-		
-
 
 
 	}

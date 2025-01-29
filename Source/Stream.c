@@ -157,3 +157,29 @@ void StreamClose(Stream* stream)
 		*stream = NULL;
 	}
 }
+
+
+// Read a token (a single word) from a file.
+// Suggested steps:
+//	 - Set the first value in tokenBuffer to 0
+//	 - If the stream was opened successfully,
+//	   - Read a string ("%s") into tokenBuffer using fscanf_s()
+//	 - Return tokenBuffer
+// Params:
+//	 stream = The file stream from which to read.
+// Returns:
+//	 Pointer to tokenBuffer
+const char* StreamReadToken(Stream stream)
+{
+	static char tokenBuffer[1024];
+
+	if (stream)
+	{
+		fscanf_s(stream, "%s", &tokenBuffer,_countof(tokenBuffer));
+
+
+	}
+
+
+
+}
