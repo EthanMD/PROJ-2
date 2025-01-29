@@ -14,6 +14,8 @@
 #include "Transform.h"
 #include "Stream.h"
 #include "stdio.h"
+#include "Sprite.h"
+#include "Physics.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -72,7 +74,7 @@ typedef struct Entity
 //	   else return NULL.
 Entity* EntityCreate(void) 
 {
-	Entity* entity = calloc(1, sizeof(Entity*));
+	Entity* entity = calloc(1, sizeof(Entity*)); //Entity instead? like this in many create functions
 	if (entity)
 	{
 
@@ -90,8 +92,11 @@ Entity* EntityCreate(void)
 void EntityFree(Entity** entity)
 {
 	UNREFERENCED_PARAMETER(entity);
-
-	free(*entity);
+	free((*entity)->transform); //free all of the components 
+	free((*entity)->sprite);
+	free((*entity)->physics);
+	free((*entity)->name);
+	free(*entity); 
 	*entity = NULL;
 }
 
@@ -117,13 +122,13 @@ void EntityRead(Entity* entity, Stream stream)
 		}
 
 
-		strcpy_s(entity->name,sizeof(Entity*),token); //good?
-
+		//strcpy_s(entity->name,sizeof(Entity*),token); //good?
+		strcpy_s(entity->name, _countof(entity->name), token); //good?
 
 
 		while (true) 
 		{
-			StreamReadToken(stream);
+			token = StreamReadToken(stream);
 
 			//[NOTE:When setting the name, use strcpy_s() to reduce the risk of
 			//buffer overruns. Additionally, do NOT hardcode the number "32" when
@@ -132,45 +137,53 @@ void EntityRead(Entity* entity, Stream stream)
 			//	•	Read a token from the stream.
 			//	•	If “token” contains “Transform”
 
+			if (!token)
+			{
+				break;
+			}
+
 			if (!strcmp(token,"Transform"))
 			{
 				//	1.	Create a new transform component using TransformCreate()
-
-				//TransformCreate();
+				Transform* transform = TransformCreate();
 
 				//	2.	Call TransformRead(), passing the created transform
-				//TransformRead();
+				TransformRead(transform, stream);
 				//	3.	Add the transform to the entity
+				EntityAddTransform(entity, transform);
 
 			}
 			else if (!strcmp(token, "Physics"))
 			{
 				//	•	Else if “token” contains “Physics
 				//Repeat steps 1 - 3 above, replacing “Transform” with “Physics”.
+				Physics* physics = PhysicsCreate();
 
+				PhysicsRead(physics, stream);
 
+				EntityAddPhysics(entity, physics);
 
 			}
 			else if (!strcmp(token, "Sprite"))
 			{
 				//Else if “token” contains “Sprite”,
 				//Repeat steps 1 - 3 above, replacing “Transform” with “Sprite”.
+				Sprite* sprite = SpriteCreate();
 
+				SpriteRead(sprite, stream);
+
+				EntityAddSprite(entity, sprite);
 
 			}
 			else if (!token[0])
 			{
 				//Else if “token” is empty(zero - length string),
 				//Break out of the while - loop.
-				return;
+				break;
+
 			}
 
-
-
-
 		}
-		
-
 
 	}
 }
@@ -183,6 +196,10 @@ void EntityAddPhysics(Entity* entity, Physics* physics)
 {
 	UNREFERENCED_PARAMETER(entity);
 	UNREFERENCED_PARAMETER(physics);
+
+	entity->physics = physics;
+
+
 }
 
 // Attach a sprite component to an Entity.
@@ -194,6 +211,8 @@ void EntityAddSprite(Entity* entity, Sprite* sprite)
 	UNREFERENCED_PARAMETER(entity);
 	UNREFERENCED_PARAMETER(sprite);
 
+	entity->sprite = sprite;
+
 }
 
 // Attach a transform component to an Entity.
@@ -204,6 +223,8 @@ void EntityAddTransform(Entity* entity, Transform* transform)
 {
 	UNREFERENCED_PARAMETER(entity);
 	UNREFERENCED_PARAMETER(transform);
+
+	entity->transform = transform;
 }
 
 // Set the Entity's name.
@@ -222,7 +243,7 @@ void EntitySetName(Entity* entity, const char* name)
 
 	if (entity && name) 
 	{
-		//strcp_s()
+		strcpy_s(entity->name, _countof(entity->name), name);
 	}
 }
 
@@ -307,6 +328,13 @@ void EntityUpdate(Entity* entity, float dt)
 {
 	UNREFERENCED_PARAMETER(entity);
 	UNREFERENCED_PARAMETER(dt);
+
+	if (entity->physics && entity->transform)
+	{
+		PhysicsUpdate(entity->physics, entity->transform, dt);
+
+	}
+
 }
 
 // Render any visible components attached to the Entity.
@@ -317,6 +345,12 @@ void EntityUpdate(Entity* entity, float dt)
 void EntityRender(Entity* entity)
 {
 	UNREFERENCED_PARAMETER(entity);
+
+	if (entity->sprite && entity->transform) 
+	{
+		SpriteRender(entity->sprite, entity->transform);
+	}
+
 }
 
 //------------------------------------------------------------------------------
