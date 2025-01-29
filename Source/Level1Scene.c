@@ -20,10 +20,17 @@
 #include "Mesh.h"
 #include "Sprite.h"
 #include "Entity.h"
+#include "Vector2D.h"
+#include "SpriteSource.h"
+#include "EntityFactory.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
-
+static const float groundHeight = -150.0f;
+static const float moveVelocity = 500.0f;
+static const float jumpVelocity = 1000.0f;
+static const Vector2D gravityNormal = { 0.0f, -1500.0f };
+static const Vector2D gravityNone = { 0.0f, 0.0f };
 //------------------------------------------------------------------------------
 // Private Structures:
 //------------------------------------------------------------------------------
@@ -94,12 +101,19 @@ static void Level1SceneLoad(void)
 {
 
 	FILE* liveStream = StreamOpen("Data/Level1_Lives.txt");
+
 	if (liveStream != NULL)
 	{
 		instance.numLives = StreamReadInt(liveStream);
 		StreamClose(&liveStream);
 	}
 
+	Mesh* mesh = MeshCreate();
+	MeshBuildQuad(mesh,0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
+
+	SpriteSource* spriteSource = SpriteSourceCreate();
+
+	SpriteSourceLoadTexture(spriteSource, 1, 1, "PlanetTexture.png");
 
 
 }
@@ -107,6 +121,28 @@ static void Level1SceneLoad(void)
 // Initialize the entities and variables used by the scene.
 static void Level1SceneInit()
 {
+	Entity* newEntity = EntityFactoryBuild("./Data/PlanetJump.txt");
+
+	if (newEntity)
+	{
+		
+		Sprite* newSprite = EntityGetSprite(newEntity);
+
+		//sprite->mesh //cant access
+
+		//entity-> //cant access
+
+		//need to set sprites mesh
+
+		//need to set sprites source
+
+		//need to set sprites frame index to 0
+
+		//DGL_Graphics_SetBackgroundColor()
+		//DGL_Graphics_SetBlendMode();
+
+	}
+
 
 }
 
