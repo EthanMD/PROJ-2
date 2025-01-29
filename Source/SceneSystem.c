@@ -132,7 +132,7 @@ static bool SceneSystemInit(void)
 {
 	// Set the starting (Default) scene.
 	// TODO: Change the starting (Default) scene from "Stub" to "Demo":
-	SceneSystemSetNext(Level1SceneGetInstance());
+	SceneSystemSetNext(DemoSceneGetInstance());
 
 	return true;
 }
