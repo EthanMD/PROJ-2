@@ -13,6 +13,7 @@
 #include "Entity.h"
 #include "Transform.h"
 #include "Stream.h"
+#include "stdio.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -109,8 +110,11 @@ void EntityRead(Entity* entity, Stream stream)
 		//read a token from the stream
 		const char* token = StreamReadToken(stream);
 		//use the token to set the entitys name
-		entity->name = token;
-		//While(true)
+		
+		strcpy_s(entity->name,sizeof(Entity*),token); //good?
+
+
+		//While(true) //?
 		
 
 		//[NOTE:When setting the name, use strcpy_s() to reduce the risk of
@@ -125,10 +129,11 @@ void EntityRead(Entity* entity, Stream stream)
 		if (token == "Transform") 
 		{
 			//	1.	Create a new transform component using TransformCreate()
-			TransformCreate();
+			
+			//TransformCreate();
 
 			//	2.	Call TransformRead(), passing the created transform
-			TransformRead();
+			//TransformRead();
 			//	3.	Add the transform to the entity
 
 		}
@@ -178,6 +183,7 @@ void EntityAddSprite(Entity* entity, Sprite* sprite)
 {
 	UNREFERENCED_PARAMETER(entity);
 	UNREFERENCED_PARAMETER(sprite);
+
 }
 
 // Attach a transform component to an Entity.
@@ -203,6 +209,11 @@ void EntitySetName(Entity* entity, const char* name)
 {
 	UNREFERENCED_PARAMETER(entity);
 	UNREFERENCED_PARAMETER(name);
+
+	if (entity && name) 
+	{
+		//strcp_s()
+	}
 }
 
 // Get the Entity's name.
@@ -215,6 +226,11 @@ void EntitySetName(Entity* entity, const char* name)
 const char* EntityGetName(const Entity* entity)
 {
 	UNREFERENCED_PARAMETER(entity);
+
+	if (entity)
+	{
+		return entity->name;
+	}
 	return NULL;
 }
 
@@ -228,6 +244,11 @@ const char* EntityGetName(const Entity* entity)
 Physics* EntityGetPhysics(const Entity* entity) 
 {
 	UNREFERENCED_PARAMETER(entity);
+
+	if (entity)
+	{
+		return entity->physics;
+	}
 	return NULL;
 }
 
@@ -241,6 +262,11 @@ Physics* EntityGetPhysics(const Entity* entity)
 Sprite* EntityGetSprite(const Entity* entity) 
 {
 	UNREFERENCED_PARAMETER(entity);
+
+	if (entity)
+	{
+		return entity->sprite;
+	}
 	return NULL;
 }
 
@@ -254,6 +280,10 @@ Sprite* EntityGetSprite(const Entity* entity)
 Transform* EntityGetTransform(const Entity* entity)
 {
 	UNREFERENCED_PARAMETER(entity);
+	if (entity)
+	{
+		return entity->transform;
+	}
 	return NULL;
 }
 
