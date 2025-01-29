@@ -108,7 +108,7 @@ void SpriteRead(Sprite* sprite, Stream stream)
 //   transform = Pointer to the Transform component.
 void SpriteRender(const Sprite* sprite, Transform* transform) 
 {
-	DGL_Color tintColor;
+	DGL_Color tintColor = { 0 };
 	tintColor.a = 0;
 	tintColor.b = 0;
 	tintColor.g = 0;

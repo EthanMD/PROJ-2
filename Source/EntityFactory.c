@@ -11,7 +11,8 @@
 
 #include "stdafx.h"
 #include "EntityFactory.h"
-
+#include "Stream.h"
+#include "Entity.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -47,6 +48,13 @@
 Entity* EntityFactoryBuild(const char* filename) 
 {
 	filename;
+
+	if (filename)
+	{
+		Stream stream = StreamOpen(filename);
+		const char* token = StreamReadToken(stream);
+		!strcmp(token, "Entity");
+	}
 
 	return NULL;
 }
