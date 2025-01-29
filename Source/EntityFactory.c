@@ -52,8 +52,20 @@ Entity* EntityFactoryBuild(const char* filename)
 	if (filename)
 	{
 		Stream stream = StreamOpen(filename);
-		const char* token = StreamReadToken(stream);
-		!strcmp(token, "Entity");
+		if(stream)
+		{
+			const char* token = StreamReadToken(stream);
+
+			if (!strncmp(token, "Entity", _countof("Entity")-1))
+			{
+				Entity* entity = EntityCreate();
+
+				EntityRead(entity, stream);
+				StreamClose(&stream);
+				return entity;
+
+			}
+		}
 	}
 
 	return NULL;
