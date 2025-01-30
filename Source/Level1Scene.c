@@ -216,61 +216,61 @@ static void Level1SceneUnload(void)
 }
 
 
-static void Level1SceneMovementController(Entity* entity) 
-{
-	//Get the Physics and Transform components from the Entity
-	//instance.entity = EntityGetPhysics(entity);//wrong make temp var?
-	//instance.entity = EntityGetSprite(entity); //wrong make temp var?
-
-	//Verify that the pointers are valid.
-	if (instance.entity)
-	{
-
-		//Get the current velocity from the Physics component and store it in a local variable. 
-		//(Hint: you will need to dereference the return value).
-		Physics* entityPhysics = EntityGetPhysics(instance.entity); //maybe
-
-		if (DGL_Input_KeyDown(VK_LEFT))
-		{
-			//set velocity.x = - moveVelocity.
-
-		}
-		if (DGL_Input_KeyDown(VK_RIGHT))
-		{
-			//set velocity.x = moveVelocity.
-		}
-		else 
-		{
-			//set velocity.x = 0.
-		}
-
-		if (DGL_Input_KeyDown(VK_UP))
-		{
-			//Set velocity.y = jumpVelocity.
-			//Set the physics acceleration = gravityNormal.
-		}
-
-		//Check for “landing”, as follows :
-		//Get the Transform component’s current translation.
-		
-			//If Y translation is < groundHeight.
-			
-			//Set Y translation = groundHeight.
-			
-			//Set velocity.y = 0.
-			
-			//Set the physics acceleration = gravityNone.
-			
-			//Decrement numLives by 1.
-		instance.numLives--;
-			//If numLives <= 0, then set next scene to Level2.
-		if (instance.numLives <= 0)
-		{
-			//set to LEVEL2
-			SceneSystemSetNext(Level2SceneGetInstance());
-		}
-
-	}
-
-}
+//static void Level1SceneMovementController(Entity* entity) 
+//{
+//	//Get the Physics and Transform components from the Entity
+//	//instance.entity = EntityGetPhysics(entity);//wrong make temp var?
+//	//instance.entity = EntityGetSprite(entity); //wrong make temp var?
+//
+//	//Verify that the pointers are valid.
+//	if (instance.entity)
+//	{
+//
+//		//Get the current velocity from the Physics component and store it in a local variable. 
+//		//(Hint: you will need to dereference the return value).
+//		Physics* entityPhysics = EntityGetPhysics(instance.entity); //maybe
+//
+//		if (DGL_Input_KeyDown(VK_LEFT))
+//		{
+//			//set velocity.x = - moveVelocity.
+//
+//		}
+//		if (DGL_Input_KeyDown(VK_RIGHT))
+//		{
+//			//set velocity.x = moveVelocity.
+//		}
+//		else 
+//		{
+//			//set velocity.x = 0.
+//		}
+//
+//		if (DGL_Input_KeyDown(VK_UP))
+//		{
+//			//Set velocity.y = jumpVelocity.
+//			//Set the physics acceleration = gravityNormal.
+//		}
+//
+//		//Check for “landing”, as follows :
+//		//Get the Transform component’s current translation.
+//		
+//			//If Y translation is < groundHeight.
+//			
+//			//Set Y translation = groundHeight.
+//			
+//			//Set velocity.y = 0.
+//			
+//			//Set the physics acceleration = gravityNone.
+//			
+//			//Decrement numLives by 1.
+//		instance.numLives--;
+//			//If numLives <= 0, then set next scene to Level2.
+//		if (instance.numLives <= 0)
+//		{
+//			//set to LEVEL2
+//			SceneSystemSetNext(Level2SceneGetInstance());
+//		}
+//
+//	}
+//
+//}
 
