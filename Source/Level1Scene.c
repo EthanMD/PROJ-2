@@ -219,8 +219,8 @@ static void Level1SceneUnload(void)
 static void Level1SceneMovementController(Entity* entity) 
 {
 	//Get the Physics and Transform components from the Entity
-	instance.entity = EntityGetPhysics(entity);//maybe
-	instance.entity = EntityGetSprite(entity); //maybe
+	//instance.entity = EntityGetPhysics(entity);//wrong make temp var?
+	//instance.entity = EntityGetSprite(entity); //wrong make temp var?
 
 	//Verify that the pointers are valid.
 	if (instance.entity)
