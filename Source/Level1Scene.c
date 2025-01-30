@@ -178,7 +178,7 @@ static void Level1SceneUpdate(float dt)
 		SceneSystemSetNext(SandboxSceneGetInstance());
 	}
 
-	instance.numLives--;
+	//instance.numLives--;
 	
 	//If numLives <= 0, then set next scene to Level2.
 	//if (instance.numLives <= 0)
