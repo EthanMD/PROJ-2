@@ -109,7 +109,7 @@ static void Level1SceneLoad(void)
 		StreamClose(&liveStream);
 	}
 
-	Mesh* mesh = MeshCreate();
+	Mesh* mesh = MeshCreate(); //issue?
 	MeshBuildQuad(mesh,0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
 
 	SpriteSource* spriteSource = SpriteSourceCreate(); //issues

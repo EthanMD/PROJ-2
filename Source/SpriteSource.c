@@ -55,7 +55,7 @@ typedef struct SpriteSource
 //	   else return NULL.
 SpriteSource* SpriteSourceCreate() 
 {
-	SpriteSource* spriteSource = calloc(1, sizeof(SpriteSource*));
+	SpriteSource* spriteSource = calloc(1, sizeof(SpriteSource));
 	if (spriteSource)
 	{
 		return spriteSource;
@@ -96,7 +96,7 @@ void SpriteSourceLoadTexture(SpriteSource* spriteSource, int numCols, int numRow
 	UNREFERENCED_PARAMETER(textureName);
 
 	char texturePath[256];
-	sprintf_s(texturePath, sizeof(texturePath), "./Assets %s", textureName);
+	sprintf_s(texturePath, sizeof(texturePath), "./Assets/%s", textureName);
 
 	spriteSource->texture = DGL_Graphics_LoadTexture(texturePath);
 

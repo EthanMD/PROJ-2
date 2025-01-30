@@ -74,7 +74,7 @@ typedef struct Entity
 //	   else return NULL.
 Entity* EntityCreate(void) 
 {
-	Entity* entity = calloc(1, sizeof(Entity*)); //Entity instead? like this in many create functions
+	Entity* entity = calloc(1, sizeof(Entity)); //Entity instead? like this in many create functions
 	if (entity)
 	{
 
