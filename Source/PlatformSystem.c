@@ -175,6 +175,7 @@ void PlatformSystemUpdate(float dt)
 // Render any objects associated with the Platform System.
 void PlatformSystemRender(void)
 {
+
 }
 
 // Shutdown the Platform System (Windows, Event Handlers).

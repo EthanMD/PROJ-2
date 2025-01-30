@@ -122,27 +122,27 @@ static void Level1SceneLoad(void)
 // Initialize the entities and variables used by the scene.
 static void Level1SceneInit()
 {
-	Entity* newEntity = EntityFactoryBuild("./Data/PlanetJump.txt");
+	//Entity* newEntity = EntityFactoryBuild("./Data/PlanetJump.txt");
 
-	if (newEntity)
-	{
-		
-		//Sprite* sprite = EntityGetSprite(newEntity);
+	//if (newEntity)
+	//{
+	//	
+	//	//Sprite* mySprite = EntityGetSprite(newEntity);
 
-		//sprite->mesh //cant access
+	//	//sprite->mesh //cant access
 
-		//entity-> //cant access
+	//	//entity-> //cant access
 
-		//need to set sprites mesh
+	//	//need to set sprites mesh
 
-		//need to set sprites source
+	//	//need to set sprites source
 
-		//need to set sprites frame index to 0
+	//	//need to set sprites frame index to 0
 
-		//DGL_Graphics_SetBackgroundColor()
-		//DGL_Graphics_SetBlendMode();
+	//	//DGL_Graphics_SetBackgroundColor()
+	//	//DGL_Graphics_SetBlendMode();
 
-	}
+	//}
 
 
 }
@@ -155,13 +155,6 @@ static void Level1SceneUpdate(float dt)
 	// Tell the compiler that the 'dt' variable is unused.
 	UNREFERENCED_PARAMETER(dt);
 
-
-	instance.numLives--;
-	if (instance.numLives <= 0) //remove now?
-	{
-		//set to LEVEL2
-		SceneSystemSetNext(Level2SceneGetInstance());	
-	}
 
 	if (DGL_Input_KeyTriggered('0'))
 	{
@@ -180,7 +173,14 @@ static void Level1SceneUpdate(float dt)
 		SceneSystemSetNext(SandboxSceneGetInstance());
 	}
 
+	instance.numLives--;
 	
+	//If numLives <= 0, then set next scene to Level2.
+	//if (instance.numLives <= 0)
+	//{
+	//		//set to LEVEL2
+	//		SceneSystemSetNext(Level2SceneGetInstance());
+	//}
 
 	// NOTE: This call causes the engine to exit immediately.  Make sure to remove
 	//   it when you are ready to test out a new scene.
@@ -200,6 +200,71 @@ static void Level1SceneExit()
 // Unload any resources used by the scene.
 static void Level1SceneUnload(void)
 {
+
+	// Free all meshes
+	//DGL_Graphics_FreeMesh(&mesh.);
+
+
+	// Free all textures
+	//DGL_Graphics_FreeTexture(&spriteSource);
+
 }
 
+
+//static void Level1SceneMovementController(Entity* entity) 
+//{
+//	//Get the Physics and Transform components from the Entity
+//	EntityGetPhysics();
+//	EntityGetSprite();
+//
+//	//Verify that the pointers are valid.
+//	if () 
+//	{
+//
+//		//Get the current velocity from the Physics component and store it in a local variable. 
+//		//(Hint: you will need to dereference the return value).
+//		
+//
+//		if (DGL_Input_KeyDown(VK_LEFT))
+//		{
+//			//set velocity.x = - moveVelocity.
+//		}
+//		if (DGL_Input_KeyDown(VK_RIGHT))
+//		{
+//			//set velocity.x = moveVelocity.
+//		}
+//		else 
+//		{
+//			//set velocity.x = 0.
+//		}
+//
+//		if (DGL_Input_KeyDown(VK_UP))
+//		{
+//			//Set velocity.y = jumpVelocity.
+//			//Set the physics acceleration = gravityNormal.
+//		}
+//
+//		//Check for “landing”, as follows :
+//		//Get the Transform component’s current translation.
+//		
+//			//If Y translation is < groundHeight.
+//			
+//			//Set Y translation = groundHeight.
+//			
+//			//Set velocity.y = 0.
+//			
+//			//Set the physics acceleration = gravityNone.
+//			
+//			//Decrement numLives by 1.
+//		instance.numLives--;
+//			//If numLives <= 0, then set next scene to Level2.
+//		if (instance.numLives <= 0)
+//		{
+//			//set to LEVEL2
+//			SceneSystemSetNext(Level2SceneGetInstance());
+//		}
+//
+//	}
+//
+//}
 
