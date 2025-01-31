@@ -18,10 +18,13 @@
 #include "Level2Scene.h"
 #include "SandboxScene.h"
 #include "DemoScene.h"
+#include "Mesh.h"
+#include "Entity.h"
+#include "EntityFactory.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
-
+static const float spaceshipSpeed = 500.0f;
 //------------------------------------------------------------------------------
 // Private Structures:
 //------------------------------------------------------------------------------
@@ -34,6 +37,9 @@ typedef struct Level2Scene
 	// Add any scene-specific variables second.
 	int numLives;
 	int numHealth;
+
+	Mesh* mesh;
+	Entity* entity;
 
 } Level2Scene;
 
@@ -90,12 +96,22 @@ const Scene* Level2SceneGetInstance(void)
 static void Level2SceneLoad(void)
 {
 
-	FILE* liveStream = StreamOpen("Data/Level2_Lives.txt");
-	if (liveStream != NULL) 
-	{
-		instance.numLives = StreamReadInt(liveStream);
-		StreamClose(&liveStream);
-	}
+	instance.mesh = MeshCreate();
+
+	MeshBuildSpaceship(instance.mesh);
+
+
+
+
+
+
+
+	//FILE* liveStream = StreamOpen("Data/Level2_Lives.txt");
+	//if (liveStream != NULL) 
+	//{
+	//	instance.numLives = StreamReadInt(liveStream);
+	//	StreamClose(&liveStream);
+	//}
 
 
 }
@@ -103,14 +119,30 @@ static void Level2SceneLoad(void)
 // Initialize the entities and variables used by the scene.
 static void Level2SceneInit()
 {
-	FILE* healthStream = StreamOpen("Data/Level2_Health.txt");
-	if (healthStream != NULL)
-	{
-		instance.numHealth = StreamReadInt(healthStream);
 
-		StreamClose(&healthStream);
-	}
-	}
+	EntityFacto
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//FILE* healthStream = StreamOpen("Data/Level2_Health.txt");
+	//if (healthStream != NULL)
+	//{
+	//	instance.numHealth = StreamReadInt(healthStream);
+
+	//	StreamClose(&healthStream);
+	//}
+}
 
 
 // Update the the variables used by the scene.
@@ -121,21 +153,39 @@ static void Level2SceneUpdate(float dt)
 	// Tell the compiler that the 'dt' variable is unused.
 	UNREFERENCED_PARAMETER(dt);
 
-	instance.numHealth--;
-	if (instance.numHealth <= 0)
-	{
-		instance.numLives--;
-		if (instance.numLives > 0)
-		{
-			SceneRestart();
-			//SceneSystemRestart();
-		}
-		else 
-		{
-			SceneSystemSetNext(SandboxSceneGetInstance()); //change to sandbox
-		}
 
-	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//instance.numHealth--;
+	//if (instance.numHealth <= 0)
+	//{
+	//	instance.numLives--;
+	//	if (instance.numLives > 0)
+	//	{
+	//		SceneRestart();
+	//		//SceneSystemRestart();
+	//	}
+	//	else 
+	//	{
+	//		SceneSystemSetNext(SandboxSceneGetInstance()); //change to sandbox
+	//	}
+
+	//}
 
 
 
