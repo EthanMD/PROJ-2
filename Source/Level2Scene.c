@@ -25,6 +25,10 @@
 #include "DGL.h"
 #include "Transform.h"
 #include "Vector2D.h"
+#include "Physics.h"
+#include "Level1Scene.h"
+#include "DemoScene.h"
+#include "SandboxScene.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -170,17 +174,40 @@ static void Level2SceneInit()
 //	 dt = Change in time (in seconds) since the last game loop.
 static void Level2SceneUpdate(float dt)
 {
-	// Tell the compiler that the 'dt' variable is unused.
-	UNREFERENCED_PARAMETER(dt);
+
+	Level2SceneMovementController(instance.entity);
+	EntityUpdate(instance.entity, dt);
 
 
 
 
+	if (DGL_Input_KeyTriggered('0'))
+	{
+		SceneSystemSetNext(DemoSceneGetInstance());
+	}
+	if (DGL_Input_KeyTriggered('1'))
+	{
+		SceneSystemSetNext(Level1SceneGetInstance());
+	}
+	if (DGL_Input_KeyTriggered('2'))
+	{
+		SceneRestart();
+	}
+	if (DGL_Input_KeyTriggered('9'))
+	{
+		SceneSystemSetNext(SandboxSceneGetInstance());
+	}
 
-
-
-
-
+	if (DGL_Input_KeyTriggered('Z'))
+	{
+		Sprite* mySprite = EntityGetSprite(instance.entity);
+		SpriteSetAlpha(mySprite, 0.5f);
+	}
+	if (DGL_Input_KeyTriggered('X'))
+	{
+		Sprite* mySprite = EntityGetSprite(instance.entity);
+		SpriteSetAlpha(mySprite, 1.0f);
+	}
 
 
 
@@ -215,11 +242,36 @@ static void Level2SceneUpdate(float dt)
 	//SceneSystemSetNext(NULL);
 }
 
+
+// Render any objects associated with the scene.
+void Level2SceneRender(void)
+{
+	EntityRender(instance.entity);
+}
+
+// Free any objects associated with the scene.
+static void Level2SceneExit()
+{
+	EntityFree(&instance.entity);
+}
+
+// Unload any resources used by the scene.
+static void Level2SceneUnload(void)
+{
+	MeshFree(&instance.mesh);
+
+}
+
+
+
+
+
+
 static void Level2SceneMovementController(Entity* entity)
 {
 	//Get the Physics and Transform components from the Entity
 	Physics* physics = EntityGetPhysics(entity);
-	Transform* transform = EntityGetTransform(entity); 
+	Transform* transform = EntityGetTransform(entity);
 
 	//Verify that the pointers are valid.
 	if (!physics || !transform) //better way
@@ -246,49 +298,18 @@ static void Level2SceneMovementController(Entity* entity)
 
 
 	//Set the transform’s rotation, using Vector2DToAngleRad() to convert the direction vector into an angle(in radians).
-	
-
+	float angle = Vector2DToAngleRad(&dirVector);
+	TransformSetRotation(transform, angle);
 
 	//Set the Physics component’s velocity = direction vector* spaceshipSpeed.
+	Vector2D velocity;
 
-	
-
-
-
-
-
-
-
-
+	Vector2DScale(&velocity, &dirVector, spaceshipSpeed);
+	PhysicsSetVelocity(physics, &velocity);
 
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// Render any objects associated with the scene.
-void Level2SceneRender(void)
-{
-}
-
-// Free any objects associated with the scene.
-static void Level2SceneExit()
-{
-}
-
-// Unload any resources used by the scene.
-static void Level2SceneUnload(void)
-{
-}
 
 
