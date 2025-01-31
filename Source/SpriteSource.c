@@ -132,8 +132,8 @@ void SpriteSourceGetUV(const SpriteSource* spriteSource, unsigned int frameIndex
 	float uOffset = 1.0f / spriteSource->numCols;
 	float vOffset = 1.0f / spriteSource->numRows;
 
-	*u = uOffset / (frameIndex % spriteSource->numCols);
-	*v = vOffset / (frameIndex / spriteSource->numCols);
+	*u = uOffset * (frameIndex % spriteSource->numCols);
+	*v = vOffset * (frameIndex / spriteSource->numCols);
 }
 
 // Sets a SpriteSource texture for rendering.
