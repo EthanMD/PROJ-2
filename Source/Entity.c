@@ -91,11 +91,12 @@ Entity* EntityCreate(void)
 //	 entity = Pointer to the Entity pointer.
 void EntityFree(Entity** entity)
 {
-	UNREFERENCED_PARAMETER(entity);
-	free((*entity)->transform); //free all of the components 
-	free((*entity)->sprite);
-	free((*entity)->physics);
-	free((*entity)->name);
+
+
+	TransformFree(&(*entity)->transform);
+	PhysicsFree(&(*entity)->physics);
+	SpriteFree(&(*entity)->sprite);
+
 	free(*entity); 
 	*entity = NULL;
 }
@@ -175,7 +176,7 @@ void EntityRead(Entity* entity, Stream stream)
 				EntityAddSprite(entity, sprite);
 
 			}
-			else if (!token[0])
+			else if (token[0] == 0)
 			{
 				//Else if “token” is empty(zero - length string),
 				//Break out of the while - loop.
@@ -194,8 +195,6 @@ void EntityRead(Entity* entity, Stream stream)
 //   physics = Pointer to the Physics component to be attached.
 void EntityAddPhysics(Entity* entity, Physics* physics)
 {
-	UNREFERENCED_PARAMETER(entity);
-	UNREFERENCED_PARAMETER(physics);
 
 	entity->physics = physics;
 
@@ -208,8 +207,6 @@ void EntityAddPhysics(Entity* entity, Physics* physics)
 //   sprite = Pointer to the Sprite component to be attached.
 void EntityAddSprite(Entity* entity, Sprite* sprite) 
 {
-	UNREFERENCED_PARAMETER(entity);
-	UNREFERENCED_PARAMETER(sprite);
 
 	entity->sprite = sprite;
 
@@ -221,8 +218,6 @@ void EntityAddSprite(Entity* entity, Sprite* sprite)
 //   transform = Pointer to the Transform component to be attached.
 void EntityAddTransform(Entity* entity, Transform* transform) 
 {
-	UNREFERENCED_PARAMETER(entity);
-	UNREFERENCED_PARAMETER(transform);
 
 	entity->transform = transform;
 }
@@ -238,8 +233,7 @@ void EntityAddTransform(Entity* entity, Transform* transform)
 //	 name = Pointer to the Entity's new name.
 void EntitySetName(Entity* entity, const char* name) 
 {
-	UNREFERENCED_PARAMETER(entity);
-	UNREFERENCED_PARAMETER(name);
+
 
 	if (entity && name) 
 	{
@@ -256,7 +250,7 @@ void EntitySetName(Entity* entity, const char* name)
 //		else return NULL.
 const char* EntityGetName(const Entity* entity)
 {
-	UNREFERENCED_PARAMETER(entity);
+
 
 	if (entity)
 	{
@@ -274,7 +268,7 @@ const char* EntityGetName(const Entity* entity)
 //		else return NULL.
 Physics* EntityGetPhysics(const Entity* entity) 
 {
-	UNREFERENCED_PARAMETER(entity);
+
 
 	if (entity)
 	{
@@ -292,7 +286,7 @@ Physics* EntityGetPhysics(const Entity* entity)
 //		else return NULL.
 Sprite* EntityGetSprite(const Entity* entity) 
 {
-	UNREFERENCED_PARAMETER(entity);
+
 
 	if (entity)
 	{
@@ -310,7 +304,7 @@ Sprite* EntityGetSprite(const Entity* entity)
 //		else return NULL.
 Transform* EntityGetTransform(const Entity* entity)
 {
-	UNREFERENCED_PARAMETER(entity);
+
 	if (entity)
 	{
 		return entity->transform;
@@ -326,13 +320,10 @@ Transform* EntityGetTransform(const Entity* entity)
 //	 dt = Change in time (in seconds) since the last game loop.
 void EntityUpdate(Entity* entity, float dt) 
 {
-	UNREFERENCED_PARAMETER(entity);
-	UNREFERENCED_PARAMETER(dt);
 
 	if (entity->physics && entity->transform)
 	{
 		PhysicsUpdate(entity->physics, entity->transform, dt);
-
 	}
 
 }
@@ -344,9 +335,8 @@ void EntityUpdate(Entity* entity, float dt)
 //	 entity = Pointer to the Entity.
 void EntityRender(Entity* entity)
 {
-	UNREFERENCED_PARAMETER(entity);
 
-	if (entity->sprite && entity->transform) 
+	if (entity) 
 	{
 		SpriteRender(entity->sprite, entity->transform);
 	}

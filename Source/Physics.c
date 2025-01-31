@@ -197,16 +197,18 @@ void PhysicsUpdate(Physics* physics, Transform* transform, float dt)
 
 	// Get translation from the transform component
 	// Set oldTranslation = translation
-	physics->oldTranslation = *TransformGetTranslation(transform);
+	Vector2DSet(&physics->oldTranslation, TransformGetTranslation(transform)->x, TransformGetTranslation(transform)->y);
 	
 	// Set velocity += acceleration * dt
 	Vector2DScaleAdd(&physics->velocity, &physics->acceleration, dt, &physics->velocity);
 
+	DGL_Vec2 newTranslation;
 	// Set translation += velocity * dt
-	Vector2DScaleAdd(&physics->oldTranslation, &physics->velocity, dt, &physics->oldTranslation);
-	// Set translation on the transform component
-	
-	TransformSetTranslation(transform, &physics->oldTranslation);
+	Vector2DScaleAdd(&newTranslation, &physics->velocity, dt, TransformGetTranslation(transform));
+
+
+	// Set translation on the transform component	
+	TransformSetTranslation(transform, &newTranslation);
 
 }
 

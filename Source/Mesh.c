@@ -86,12 +86,8 @@ Mesh* MeshCreate()
 //	 name = A name for the mesh.
 void MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name)
 {
-	UNREFERENCED_PARAMETER(mesh);
-	UNREFERENCED_PARAMETER(xHalfSize);
-	UNREFERENCED_PARAMETER(yHalfSize);
-	UNREFERENCED_PARAMETER(uSize);
-	UNREFERENCED_PARAMETER(vSize);
-	UNREFERENCED_PARAMETER(name);
+	strcpy_s(mesh->name, _countof(mesh->name), name);
+	mesh->drawMode = DGL_DM_TRIANGLELIST;
 
 	DGL_Graphics_StartMesh();
 
@@ -148,7 +144,6 @@ void MeshBuildSpaceship(Mesh* mesh) //possibly messed up
 //   mesh = Pointer to a Mesh to be rendered.
 void MeshRender(const Mesh* mesh) 
 {
-	UNREFERENCED_PARAMETER(mesh);
 
 	DGL_Graphics_DrawMesh(mesh->meshResource, mesh->drawMode);
 	
@@ -162,9 +157,8 @@ void MeshRender(const Mesh* mesh)
 //   mesh = Pointer to the Mesh pointer.
 void MeshFree(Mesh** mesh) 
 {
-	UNREFERENCED_PARAMETER(mesh);
 
-	DGL_Graphics_FreeMesh(&(*mesh)->meshResource); // need to understand
+	DGL_Graphics_FreeMesh(&(*mesh)->meshResource); 
 
 	free(*mesh);
 	*mesh = NULL;

@@ -74,7 +74,6 @@ Transform* TransformCreate(void)
 //	 transform = Pointer to the Transform pointer.
 void TransformFree(Transform** transform) 
 {
-	UNREFERENCED_PARAMETER(transform);
 
 	free(*transform);
 	*transform = NULL;
@@ -92,8 +91,6 @@ void TransformFree(Transform** transform)
 //	 stream = The data stream used for reading.
 void TransformRead(Transform* transform, Stream stream) 
 {
-	UNREFERENCED_PARAMETER(transform);
-	UNREFERENCED_PARAMETER(stream);
 
 	StreamReadVector2D(stream, &transform->translation); 
 
@@ -112,7 +109,7 @@ void TransformRead(Transform* transform, Stream stream)
 //		else return a NULL pointer.
 const Vector2D* TransformGetTranslation(const Transform* transform) 
 {
-	UNREFERENCED_PARAMETER(transform);
+
 
 
 	if (transform) 
@@ -133,7 +130,7 @@ const Vector2D* TransformGetTranslation(const Transform* transform)
 //		else return 0.0f.
 float TransformGetRotation(const Transform* transform) 
 {
-	UNREFERENCED_PARAMETER(transform);
+
 
 	if (transform) 
 	{

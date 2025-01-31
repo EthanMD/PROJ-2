@@ -57,7 +57,7 @@
 //	 Pointer to a FILE object if the file was opened successfully.
 Stream StreamOpen(const char* filePath)
 {
-	FILE* stream;
+	Stream stream;
 	fopen_s(&stream, filePath, "rt"); //what should this log be called?
 	if (!stream) 
 	{
@@ -172,6 +172,8 @@ void StreamClose(Stream* stream)
 const char* StreamReadToken(Stream stream)
 {
 	static char tokenBuffer[1024] = { 0 };
+
+	tokenBuffer[0] = 0;
 
 	if (stream)
 	{

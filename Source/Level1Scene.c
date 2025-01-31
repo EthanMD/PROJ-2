@@ -24,6 +24,8 @@
 #include "SpriteSource.h"
 #include "EntityFactory.h"
 #include "SandboxScene.h"
+#include "Physics.h"
+#include "Transform.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -68,7 +70,7 @@ static void Level1SceneUpdate(float dt);
 static void Level1SceneExit(void);
 static void Level1SceneUnload(void);
 static void Level1SceneRender(void);
-
+static void Level1SceneMovementController(Entity* entity);
 //------------------------------------------------------------------------------
 // Instance Variable:
 //------------------------------------------------------------------------------
@@ -110,12 +112,12 @@ static void Level1SceneLoad(void)
 		StreamClose(&liveStream);
 	}
 
-	instance.mesh = MeshCreate(); //issue?
+	instance.mesh = MeshCreate();
 	MeshBuildQuad(instance.mesh,0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
 
-	instance.spriteSource = SpriteSourceCreate(); //issues
+	instance.spriteSource = SpriteSourceCreate(); 
 
-	SpriteSourceLoadTexture(instance.spriteSource, 1, 1, "PlanetTexture.png"); //issues
+	SpriteSourceLoadTexture(instance.spriteSource, 1, 1, "PlanetTexture.png"); 
 
 
 }
@@ -157,8 +159,10 @@ static void Level1SceneInit()
 //	 dt = Change in time (in seconds) since the last game loop.
 static void Level1SceneUpdate(float dt)
 {
-	// Tell the compiler that the 'dt' variable is unused.
-	UNREFERENCED_PARAMETER(dt);
+
+	Level1SceneMovementController(instance.entity);
+
+	EntityUpdate(instance.entity, dt);
 
 
 	if (DGL_Input_KeyTriggered('0'))
@@ -178,6 +182,9 @@ static void Level1SceneUpdate(float dt)
 		SceneSystemSetNext(SandboxSceneGetInstance());
 	}
 
+
+
+
 	//instance.numLives--;
 	
 	//If numLives <= 0, then set next scene to Level2.
@@ -195,82 +202,104 @@ static void Level1SceneUpdate(float dt)
 // Render any objects associated with the scene.
 void Level1SceneRender(void)
 {
+	EntityRender(instance.entity);
+	
 }
 
 // Free any objects associated with the scene.
 static void Level1SceneExit()
 {
+	EntityFree(&instance.entity);
 }
 
 // Unload any resources used by the scene.
 static void Level1SceneUnload(void)
 {
 
-	// Free all meshes
-	//DGL_Graphics_FreeMesh(instance.mesh);
-
-
 	// Free all textures
-	//DGL_Graphics_FreeTexture(instance.spriteSource);
+	SpriteSourceFree(&instance.spriteSource);
+	// Free all meshes
+	MeshFree(&instance.mesh);
+
 
 }
 
 
-//static void Level1SceneMovementController(Entity* entity) 
-//{
-//	//Get the Physics and Transform components from the Entity
-//	//instance.entity = EntityGetPhysics(entity);//wrong make temp var?
-//	//instance.entity = EntityGetSprite(entity); //wrong make temp var?
-//
-//	//Verify that the pointers are valid.
-//	if (instance.entity)
-//	{
-//
-//		//Get the current velocity from the Physics component and store it in a local variable. 
-//		//(Hint: you will need to dereference the return value).
-//		Physics* entityPhysics = EntityGetPhysics(instance.entity); //maybe
-//
-//		if (DGL_Input_KeyDown(VK_LEFT))
-//		{
-//			//set velocity.x = - moveVelocity.
-//
-//		}
-//		if (DGL_Input_KeyDown(VK_RIGHT))
-//		{
-//			//set velocity.x = moveVelocity.
-//		}
-//		else 
-//		{
-//			//set velocity.x = 0.
-//		}
-//
-//		if (DGL_Input_KeyDown(VK_UP))
-//		{
-//			//Set velocity.y = jumpVelocity.
-//			//Set the physics acceleration = gravityNormal.
-//		}
-//
-//		//Check for “landing”, as follows :
-//		//Get the Transform component’s current translation.
-//		
-//			//If Y translation is < groundHeight.
-//			
-//			//Set Y translation = groundHeight.
-//			
-//			//Set velocity.y = 0.
-//			
-//			//Set the physics acceleration = gravityNone.
-//			
-//			//Decrement numLives by 1.
-//		instance.numLives--;
-//			//If numLives <= 0, then set next scene to Level2.
-//		if (instance.numLives <= 0)
-//		{
-//			//set to LEVEL2
-//			SceneSystemSetNext(Level2SceneGetInstance());
-//		}
-//
-//	}
-//
-//}
+static void Level1SceneMovementController(Entity* entity) 
+{
+
+	//Get the Physics and Transform components from the Entity
+	Physics* physics = EntityGetPhysics(entity);//wrong make temp var?
+	Transform* transform = EntityGetTransform(entity); //wrong make temp var?
+
+	Vector2D translation = *TransformGetTranslation(transform);
+	//Verify that the pointers are valid.
+	if (physics && transform)
+	{
+
+		//Get the current velocity from the Physics component and store it in a local variable. 
+		//(Hint: you will need to dereference the return value).
+
+		//Physics* entityPhysics = EntityGetPhysics(instance.entity); //maybe
+
+		Vector2D velocity = *PhysicsGetVelocity(physics);
+
+		float inputDir = 0;
+
+		if (DGL_Input_KeyDown(VK_LEFT))
+		{
+			//set velocity.x = - moveVelocity.
+			inputDir -= moveVelocity;
+
+			
+
+		}
+		else if (DGL_Input_KeyDown(VK_RIGHT))
+		{
+			//set velocity.x = moveVelocity.
+			inputDir += moveVelocity;
+
+		}
+		velocity.x = inputDir;
+
+		if (DGL_Input_KeyDown(VK_UP))
+		{
+			//Set velocity.y = jumpVelocity.
+			velocity.y = jumpVelocity;
+			
+		    //Set the physics acceleration = gravityNormal.
+			PhysicsSetAcceleration(physics, &gravityNormal);
+
+		}
+
+		//Check for “landing”, as follows :
+		//Get the Transform component’s current translation.
+		
+			//If Y translation is < groundHeight.
+		if (translation.y < groundHeight)
+		{
+			translation.y = groundHeight;
+			//Set Y translation = groundHeight.
+
+			//Set velocity.y = 0.
+			velocity.y = 0;
+			//Set the physics acceleration = gravityNone.
+			PhysicsSetAcceleration(physics, &gravityNone);
+			//Decrement numLives by 1.
+			instance.numLives--;
+		}
+
+		//If numLives <= 0, then set next scene to Level2.
+		if (instance.numLives <= 0)
+		{
+			//set to LEVEL2
+			SceneSystemSetNext(Level2SceneGetInstance());
+		}
+
+		TransformSetTranslation(transform, &translation);
+		PhysicsSetVelocity(physics, &velocity);
+
+	}
+
+}
 
