@@ -135,11 +135,9 @@ void StreamReadVector2D(Stream stream, Vector2D* vector)
 		
 		float x = StreamReadFloat(stream);
 		float y = StreamReadFloat(stream);
-		if (x && y) 
-		{
+
 			vector->x = x;
 			vector->y = y;
-		}
 	}
 	// else do nothing(optionally, write an error message to the trace log).
 }

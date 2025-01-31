@@ -92,7 +92,6 @@ Entity* EntityCreate(void)
 void EntityFree(Entity** entity)
 {
 
-
 	TransformFree(&(*entity)->transform);
 	PhysicsFree(&(*entity)->physics);
 	SpriteFree(&(*entity)->sprite);

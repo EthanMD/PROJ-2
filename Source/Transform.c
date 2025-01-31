@@ -58,7 +58,7 @@ typedef struct Transform
 //	   else return NULL.
 Transform* TransformCreate(void)
 {
-	Transform* transform = calloc(1, sizeof(Transform*));
+	Transform* transform = calloc(1, sizeof(Transform));
 	if (transform)
 	{
 		return transform;
@@ -193,7 +193,8 @@ void TransformSetScale(Transform* transform, const Vector2D* scale)
 	UNREFERENCED_PARAMETER(transform);
 	UNREFERENCED_PARAMETER(scale);
 
-	transform->scale = *scale;
+	transform->scale.x = scale->x;
+	transform->scale.y = scale->y;
 }
 //------------------------------------------------------------------------------
 // Private Functions:

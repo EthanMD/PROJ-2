@@ -64,9 +64,12 @@ typedef struct Sprite
 //	   else return NULL.
 Sprite* SpriteCreate(void) 
 {
-	Sprite* sprite = calloc(1, sizeof(Sprite*));
+	Sprite* sprite = calloc(1, sizeof(Sprite));
 	if (sprite)
 	{
+		sprite->alpha = 1.0f;
+
+
 		return sprite;
 	}
 
@@ -123,8 +126,11 @@ void SpriteRender(const Sprite* sprite, Transform* transform)
 		SpriteSourceSetTexture(sprite->spriteSource);
 		SpriteSourceSetTextureOffset(sprite->spriteSource, sprite->frameIndex);
 	}
-
-	DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
+	else 
+	{
+		DGL_Graphics_SetShaderMode(DGL_PSM_COLOR, DGL_VSM_DEFAULT);
+	}
+	
 	DGL_Graphics_SetCB_TransformData(TransformGetTranslation(transform), TransformGetScale(transform), TransformGetRotation(transform));
 	DGL_Graphics_SetCB_Alpha(sprite->alpha);
 	DGL_Graphics_SetCB_TintColor(&tintColor);

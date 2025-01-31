@@ -61,7 +61,7 @@ typedef struct Physics
 //	   else return NULL.
 Physics* PhysicsCreate(void) 
 {
-	Physics* physics = calloc(1, sizeof(physics));
+	Physics* physics = calloc(1, sizeof(Physics));
 	if (physics)
 	{
 		return physics;
@@ -189,25 +189,24 @@ void PhysicsSetVelocity(Physics* physics, const Vector2D* velocity)
 //	 dt = Change in time (in seconds) since the last game loop.
 void PhysicsUpdate(Physics* physics, Transform* transform, float dt)
 {
-	UNREFERENCED_PARAMETER(physics);
-	UNREFERENCED_PARAMETER(transform);
-	UNREFERENCED_PARAMETER(dt);
 
 	// Validate the pointers.
 
 	// Get translation from the transform component
-	// Set oldTranslation = translation
+
+	// Store the translation (as oldTranslation) in the Physics component.
 	Vector2DSet(&physics->oldTranslation, TransformGetTranslation(transform)->x, TransformGetTranslation(transform)->y);
 	
-	// Set velocity += acceleration * dt
-	Vector2DScaleAdd(&physics->velocity, &physics->acceleration, dt, &physics->velocity);
+	// Use the Vector2DScaleAdd function to perform the following calculation: velocity = acceleration * dt + velocity
+	Vector2DScaleAdd(&physics->velocity, PhysicsGetAcceleration(physics), dt, PhysicsGetVelocity(physics));
 
+
+	// Use the Vector2DScaleAdd function to perform the following calculation: translation = velocity * dt + translation
 	DGL_Vec2 newTranslation;
-	// Set translation += velocity * dt
-	Vector2DScaleAdd(&newTranslation, &physics->velocity, dt, TransformGetTranslation(transform));
+	Vector2DScaleAdd(&newTranslation, PhysicsGetVelocity(physics), dt, TransformGetTranslation(transform));
 
 
-	// Set translation on the transform component	
+	// Store the new translation in the transform component
 	TransformSetTranslation(transform, &newTranslation);
 
 }

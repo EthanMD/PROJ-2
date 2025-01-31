@@ -134,15 +134,11 @@ static void Level1SceneInit()
 	{
 		
 		Sprite* mySprite = EntityGetSprite(instance.entity);
-		
-		
-
+	
 		//need to set sprites mesh
 		SpriteSetMesh(mySprite, instance.mesh); //right??
-
 		//need to set sprites source
 		SpriteSetSpriteSource(mySprite, instance.spriteSource); //right??
-
 		//need to set sprites frame index to 0
 		SpriteSetFrame(mySprite, 0);
 
