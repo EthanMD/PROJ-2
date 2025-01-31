@@ -169,7 +169,7 @@ void SpriteSetAlpha(Sprite* sprite, float alpha)
 	UNREFERENCED_PARAMETER(sprite);
 	UNREFERENCED_PARAMETER(alpha);
 
-	sprite->alpha = min(1.0f, max(0.0f, alpha));
+	sprite->alpha = min(0.0f, max(1.0f, alpha)); //one of bugs
 }
 
 // Set a Sprite's current frame.
@@ -186,7 +186,7 @@ void SpriteSetFrame(Sprite* sprite, unsigned int frameIndex)
 	UNREFERENCED_PARAMETER(sprite);
 	UNREFERENCED_PARAMETER(frameIndex);
 
-	if (frameIndex >= 0 && frameIndex >= sprite->frameIndex - 1) 
+	if (frameIndex >= 0 && frameIndex <= sprite->frameIndex - 1) 
 	{
 		sprite->frameIndex = frameIndex; // issues?
 	}

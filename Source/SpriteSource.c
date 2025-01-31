@@ -58,6 +58,8 @@ SpriteSource* SpriteSourceCreate()
 	SpriteSource* spriteSource = calloc(1, sizeof(SpriteSource));
 	if (spriteSource)
 	{
+		spriteSource->numCols = 1;
+		spriteSource->numRows = 1;
 		return spriteSource;
 	}
 
@@ -89,19 +91,13 @@ void SpriteSourceFree(SpriteSource** spriteSource)
 //	 textureName = The name of the texture to be loaded.
 void SpriteSourceLoadTexture(SpriteSource* spriteSource, int numCols, int numRows, const char* textureName)
 {
-	UNREFERENCED_PARAMETER(spriteSource);
-	UNREFERENCED_PARAMETER(numCols);
-	UNREFERENCED_PARAMETER(numRows);
-	UNREFERENCED_PARAMETER(textureName);
 
 	char texturePath[256];
-	sprintf_s(texturePath, sizeof(texturePath), "./Assets/%s", textureName);
+	sprintf_s(texturePath, sizeof(texturePath), "Assets/%s", textureName);
 
 	spriteSource->texture = DGL_Graphics_LoadTexture(texturePath);
-
 	spriteSource->numCols = numCols;
 	spriteSource->numRows = numRows;
-
 }
 
 // Returns the maximum number of frames possible, given the dimensions of the sprite sheet.
@@ -114,7 +110,6 @@ void SpriteSourceLoadTexture(SpriteSource* spriteSource, int numCols, int numRow
 //		else return 0.
 unsigned SpriteSourceGetFrameCount(const SpriteSource* spriteSource)
 {
-	UNREFERENCED_PARAMETER(spriteSource);
 
 	if (spriteSource)
 	{
@@ -133,18 +128,6 @@ unsigned SpriteSourceGetFrameCount(const SpriteSource* spriteSource)
 //   v = Pointer to a float to contain the V coordinate. 
 void SpriteSourceGetUV(const SpriteSource* spriteSource, unsigned int frameIndex, float* u, float* v) 
 {
-	UNREFERENCED_PARAMETER(spriteSource);
-	UNREFERENCED_PARAMETER(frameIndex);
-	UNREFERENCED_PARAMETER(u);
-	UNREFERENCED_PARAMETER(v);
-
-
-	//uSize = 1.0f / numColumns;
-	//vSize = 1.0f / numRows
-
-	//uOffset = uSize * (frameIndex % numColumns);
-	//vOffset = vSize * (frameIndex / numColumns);
-
 
 	float uOffset = 1.0f / spriteSource->numCols;
 	float vOffset = 1.0f / spriteSource->numRows;
@@ -158,11 +141,7 @@ void SpriteSourceGetUV(const SpriteSource* spriteSource, unsigned int frameIndex
 //	 spriteSource = Pointer to the SpriteSource object.
 void SpriteSourceSetTexture(const SpriteSource* spriteSource) 
 {
-	UNREFERENCED_PARAMETER(spriteSource);
-
-
 	DGL_Graphics_SetTexture(spriteSource->texture);
-
 }
 
 // Sets the texture UV offsets for rendering.
@@ -170,11 +149,8 @@ void SpriteSourceSetTexture(const SpriteSource* spriteSource)
 //	 spriteSource = Pointer to the SpriteSource object.
 void SpriteSourceSetTextureOffset(const SpriteSource* spriteSource, unsigned frameIndex)
 {
-	UNREFERENCED_PARAMETER(spriteSource);
-	UNREFERENCED_PARAMETER(frameIndex);
 
 	DGL_Vec2 offset = { 0,0 };
-
 	SpriteSourceGetUV(spriteSource, frameIndex, &offset.x, &offset.y);
 	DGL_Graphics_SetCB_TextureOffset(&offset);
 

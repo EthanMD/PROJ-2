@@ -114,9 +114,7 @@ static void Level1SceneLoad(void)
 
 	instance.mesh = MeshCreate();
 	MeshBuildQuad(instance.mesh,0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
-
 	instance.spriteSource = SpriteSourceCreate(); 
-
 	SpriteSourceLoadTexture(instance.spriteSource, 1, 1, "PlanetTexture.png"); 
 
 
