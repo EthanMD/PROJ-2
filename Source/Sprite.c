@@ -166,10 +166,8 @@ float SpriteGetAlpha(const Sprite* sprite)
 //   alpha = The Sprite's new alpha value.
 void SpriteSetAlpha(Sprite* sprite, float alpha)
 {
-	UNREFERENCED_PARAMETER(sprite);
-	UNREFERENCED_PARAMETER(alpha);
 
-	sprite->alpha = min(0.0f, max(1.0f, alpha)); //one of bugs
+	sprite->alpha = min(1.0f, max(0.0f, alpha)); //one of bugs
 }
 
 // Set a Sprite's current frame.

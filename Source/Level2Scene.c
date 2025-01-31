@@ -179,8 +179,6 @@ static void Level2SceneUpdate(float dt)
 	EntityUpdate(instance.entity, dt);
 
 
-
-
 	if (DGL_Input_KeyTriggered('0'))
 	{
 		SceneSystemSetNext(DemoSceneGetInstance());
