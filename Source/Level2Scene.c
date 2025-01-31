@@ -21,10 +21,13 @@
 #include "Mesh.h"
 #include "Entity.h"
 #include "EntityFactory.h"
+#include "Sprite.h"
+#include "DGL.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
 static const float spaceshipSpeed = 500.0f;
+static const DGL_Color DGL_Color_Black = { 0.0f, 0.0f, 0.0f, 1.0f };
 //------------------------------------------------------------------------------
 // Private Structures:
 //------------------------------------------------------------------------------
@@ -100,7 +103,7 @@ static void Level2SceneLoad(void)
 
 	MeshBuildSpaceship(instance.mesh);
 
-
+	
 
 
 
@@ -120,7 +123,21 @@ static void Level2SceneLoad(void)
 static void Level2SceneInit()
 {
 
-	EntityFacto
+	instance.entity = EntityFactoryBuild("./Data/SpaceshipHoming.txt");
+
+	if (instance.entity) 
+	{
+		
+		Sprite* mySprite = EntityGetSprite(instance.entity);
+
+		SpriteSetMesh(mySprite, instance.mesh);
+
+		DGL_Graphics_SetBackgroundColor(&DGL_Color_Black);
+		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
+
+
+
+	}
 
 
 
