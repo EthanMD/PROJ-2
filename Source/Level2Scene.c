@@ -23,6 +23,8 @@
 #include "EntityFactory.h"
 #include "Sprite.h"
 #include "DGL.h"
+#include "Transform.h"
+#include "Vector2D.h"
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
@@ -65,6 +67,7 @@ static void Level2SceneUpdate(float dt);
 static void Level2SceneExit(void);
 static void Level2SceneUnload(void);
 static void Level2SceneRender(void);
+static void Level2SceneMovementController(Entity* entity);
 
 //------------------------------------------------------------------------------
 // Instance Variable:
@@ -211,6 +214,67 @@ static void Level2SceneUpdate(float dt)
 	//   it when you are ready to test out a new scene.
 	//SceneSystemSetNext(NULL);
 }
+
+static void Level2SceneMovementController(Entity* entity)
+{
+	//Get the Physics and Transform components from the Entity
+	Physics* physics = EntityGetPhysics(entity);
+	Transform* transform = EntityGetTransform(entity); 
+
+	//Verify that the pointers are valid.
+	if (!physics || !transform) //better way
+	{
+		return;
+	}
+
+	//Get the mouse cursor position (in screen coordinates):
+	DGL_Vec2 mousePos = DGL_Input_GetMousePosition();
+
+	//Convert the screen coordinates to world coordinates
+	DGL_Vec2 newMousePos = DGL_Camera_ScreenCoordToWorld(&mousePos);
+
+	//Get the spaceship’s current translation
+	const Vector2D translation = *TransformGetTranslation(transform);
+
+	Vector2D dirVector = { 0 };
+	//Calculate a direction vector from the spaceship to the mouse position.
+	//Hint : Use Vector2DSub() to subtract one vector from another.
+	Vector2DSub(&dirVector, &newMousePos, &translation);
+
+	//Normalize the direction vector using Vector2DNormalize()
+	Vector2DNormalize(&dirVector, &dirVector);
+
+
+	//Set the transform’s rotation, using Vector2DToAngleRad() to convert the direction vector into an angle(in radians).
+	
+
+
+	//Set the Physics component’s velocity = direction vector* spaceshipSpeed.
+
+	
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Render any objects associated with the scene.
 void Level2SceneRender(void)
